@@ -1,21 +1,34 @@
 module OpenURL
 
+    
+  require 'jcode'
+
+  ## 
   # The ContextObject class is intended to both create new OpenURL 1.0 context
-  # objects or parse existing ones, either from Key-Encoded Values (KEVs) or XML.
-  # Usage:
+  # objects or parse existing ones, either from Key-Encoded Values (KEVs) or
+  # XML.
+  # == Create a new ContextObject programmatically 
   #   require 'openurl/context_object'
   #   include OpenURL
+  # 
   #   ctx = ContextObject.new
-  #   ctx.referent.set_format('journal')
+  #   ctx.referent.set_format('journal') # important to do this FIRST.
+  # 
   #   ctx.referent.add_identifier('info:doi/10.1016/j.ipm.2005.03.024')
   #   ctx.referent.set_metadata('issn', '0306-4573')
   #   ctx.referent.set_metadata('aulast', 'Bollen')
   #   ctx.referrer.add_identifier('info:sid/google')
   #   puts ctx.kev
   #   # url_ver=Z39.88-2004&ctx_tim=2007-10-29T12%3A18%3A53-0400&ctx_ver=Z39.88-2004&ctx_enc=info%3Aofi%2Fenc%3AUTF-8&ctx_id=&rft.issn=0306-4573&rft.aulast=Bollen&rft_val_fmt=info%3Aofi%2Ffmt%3Axml%3Axsd%3Ajournal&rft_id=info%3Adoi%2F10.1016%2Fj.ipm.2005.03.024&rfr_id=info%3Asid%2Fgoogle
-  
-  require 'jcode'
-  
+  #
+  # == Create a new ContextObject from an existing kev or XML serialization:
+  #
+  # ContextObject.new_from_kev(   kev_context_object )
+  # ContextObject.new_from_xml(   xml_context_object ) # Can be String or REXML::Document
+  #
+  # == Serialize a ContextObject to kev or XML :
+  # ctx.kev
+  # ctx.xml
   class ContextObject    
 
     attr_reader :admin, :referent, :referringEntity, :requestor, :referrer, 
