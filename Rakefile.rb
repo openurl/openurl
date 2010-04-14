@@ -1,19 +1,26 @@
-# 
-# Rakefile.rb
-# 
-# Created on Oct 29, 2007, 3:12:35 PM
-# 
-# To change this template, choose Tools | Templates
-# and open the template in the editor.
- 
-RUBY_OPENURL_VERSION = '0.0.2'
-
 require 'rubygems'
 require 'rake'
 require 'rake/testtask'
 require 'rake/rdoctask'
 require 'rake/packagetask'
 require 'rake/gempackagetask'
+
+begin
+  require 'jeweler'
+  Jeweler::Tasks.new do |gemspec|
+    gemspec.name = "openurl"
+    gemspec.summary = "a Ruby library to create, parse and use NISO Z39.88 OpenURLs"
+    gemspec.email = ["rochkind@jhu.edu", "rossfsinger@gmail.com"]
+    gemspec.homepage = "http://openurl.rubyforge.org/"
+    gemspec.authors = ["Jonathan Rochkind", "Ross Singer"]
+    gemspec.files = Dir.glob("{lib,test}/**/*")
+    gemspec.require_path = 'lib'
+    gemspec.autorequire = 'openurl'
+    gemspec.has_rdoc = true    
+  end
+rescue LoadError
+  puts "Jeweler not available. Install it with: gem install jeweler"
+end
 
 Rake::TestTask.new('test') do |t|
   t.libs << 'lib'
@@ -29,23 +36,4 @@ Rake::RDocTask.new('doc') do |rd|
   rd.main = 'README'
   rd.options << "--all"
   rd.rdoc_dir = 'doc'
-end
-
-spec = Gem::Specification.new do |s|
-  s.name = 'openurl'
-  s.version = RUBY_OPENURL_VERSION
-  s.author = 'Ross Singer'
-  s.email = 'rossfsinger@gmail.com'
-  s.homepage = 'http://openurl.rubyforge.org/'
-  s.platform = Gem::Platform::RUBY
-  s.summary = 'a Ruby library to create, parse and use NISO Z39.88 OpenURLs'
-  s.files = Dir.glob("{lib,test}/**/*")
-  s.require_path = 'lib'
-  s.autorequire = 'openurl'
-  s.has_rdoc = true
-end
-
-Rake::GemPackageTask.new(spec) do |pkg|
-  pkg.need_zip = true
-  pkg.need_tar = true
 end
