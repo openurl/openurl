@@ -61,10 +61,8 @@ You should be able to install the gem:
 
   gem install openurl
 
-The source lives in subversion:
+The source lives in git on github:
 
-  http://openurl.rubyforge.org/svn/
+  http://github.com/openurl/openurl
 
-== CONTACT
 
-Bugs and suggestions to Jonathan Rochkind Ross Singer <rossfsinger@gmail.com>
