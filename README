@@ -30,6 +30,11 @@ response format, so parsing the returned value is up to you.
   transport = OpenURL::Transport.new('http://demo.exlibrisgroup.com:9003/lr_3', context_object)
   transport.get
   puts tranport.response
+  
+  # Create a new ContextObject from an existing kev or XML serialization:
+  #
+  # ContextObject.new_from_kev(   kev_context_object )
+  # ContextObject.new_from_xml(   xml_context_object ) # Can be String or REXML::Document
 
 
 == INSTALLATION
