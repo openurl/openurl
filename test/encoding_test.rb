@@ -7,7 +7,8 @@ unless "".respond_to?(:encoding)
   puts <<eos
   
 =================================================================
-  WARNING: Can't run encoding tests unless under ruby 1.9 (#{__FILE__}). 
+  WARNING: Can't run encoding tests unless under ruby 1.9 
+      #{__FILE__} 
   Encoding tests will NOT be run.
 =================================================================
 
