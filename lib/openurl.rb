@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 # A library to create and parse NISO Z39.88 OpenURLs
 # Can also work with OpenURL 0.1, but your YMMV
 # See:  http://alcme.oclc.org/openurl/docs/implementation_guidelines/

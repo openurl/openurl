@@ -1,3 +1,7 @@
+# encoding: UTF-8
+
+Encoding.default_external = "UTF-8" if defined? Encoding
+
 class ContextObjectTest < Test::Unit::TestCase
 
   def test_create_ctx    
@@ -273,30 +277,6 @@ class ContextObjectTest < Test::Unit::TestCase
     test_not_shared_objects( ctx_orig, ctx_with_imported_data )
     
   end
-
-  
-  # Make sure ctx1 and ctx2 don't share the same data objects.
-  # If they did, a change to one would change the other.
-  def test_not_shared_objects(ctx1, ctx2)
-    assert_not_equal( ctx1.referent.object_id, ctx2.referent.object_id );
-    assert_not_equal( ctx1.referent.metadata.object_id, ctx2.referent.metadata.object_id )
-    
-    original_ref_title = ctx1.referent.metadata['title']
-    new_title = "new test title"
-    # just ensure new uniqueness
-    new_title += original_ref_title if original_ref_title 
-    
-    ctx1.referent.set_metadata('title', new_title)
-
-    # That better not have changed ctx2
-
-    assert_not_equal( new_title, ctx2.referent.metadata['title'])
-    
-    # Now fix first title back to what it was originally, to have no
-    # side-effects
-    ctx1.referent.set_metadata('title', original_ref_title )
-  end
-    
   
   
   def test_to_hash
@@ -370,6 +350,30 @@ class ContextObjectTest < Test::Unit::TestCase
     assert_match("ctx_id=10_8",ctx.kev)
     assert_match("ctx_ver=Z39.88-2004",ctx.kev)
     assert_match("ctx_enc=#{CGI.escape("info:ofi/enc:UTF-8")}", ctx.kev)
+  end
+  
+  protected
+  
+  # Make sure ctx1 and ctx2 don't share the same data objects.
+  # If they did, a change to one would change the other.
+  def test_not_shared_objects(ctx1, ctx2)
+    assert_not_equal( ctx1.referent.object_id, ctx2.referent.object_id );
+    assert_not_equal( ctx1.referent.metadata.object_id, ctx2.referent.metadata.object_id )
+    
+    original_ref_title = ctx1.referent.metadata['title']
+    new_title = "new test title"
+    # just ensure new uniqueness
+    new_title += original_ref_title if original_ref_title 
+    
+    ctx1.referent.set_metadata('title', new_title)
+
+    # That better not have changed ctx2
+
+    assert_not_equal( new_title, ctx2.referent.metadata['title'])
+    
+    # Now fix first title back to what it was originally, to have no
+    # side-effects
+    ctx1.referent.set_metadata('title', original_ref_title )
   end
   
   def test_kev_values(ctx)    

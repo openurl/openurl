@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 module OpenURL
   
   # The ContextObjectEntity is a generic class to define an entity.  It should

@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 # 
 # scholarly_service_type.rb
 # 

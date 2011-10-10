@@ -1,7 +1,11 @@
+# encoding: UTF-8
+
 module OpenURL
 
-    
-  require 'jcode'
+  if RUBY_VERSION < '1.9'
+    require 'jcode'
+    $KCODE='UTF-8'
+  end
 
   ## 
   # The ContextObject class is intended to both create new OpenURL 1.0 context
@@ -47,7 +51,6 @@ module OpenURL
       @serviceType = []
       @resolver = []
       @foreign_keys = {}
-      $KCODE='UTF-8'
       @admin = {"ctx_ver"=>{"label"=>"version", "value"=>"Z39.88-2004"}, "ctx_tim"=>{"label"=>"timestamp", "value"=>DateTime.now().to_s}, "ctx_id"=>{"label"=>"identifier", "value"=>""}, "ctx_enc"=>{"label"=>"encoding", "value"=>"info:ofi/enc:UTF-8"}}    
     end
 

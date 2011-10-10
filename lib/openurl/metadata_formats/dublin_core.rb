@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 # 
 # dublin_core.rb
 # 
@@ -54,11 +56,13 @@ module OpenURL
       end                 
     end 
     
-    def import_xml_metadata(node)         
+    def import_xml_metadata(node)     
       mbv = REXML::XPath.first(node, "./ctx:metadata-by-val/ctx:metadata/fmt:dc", {"ctx"=>"info:ofi/fmt:xml:xsd:ctx", "fmt"=>@oai_ns})					              
       if mbv
-        mbv.to_a.each do |m|
-          self.set_metadata(m.name(), CGI.unescapeHTML(m.children.to_s)) unless m.children.empty?                                  
+        mbv.to_a.each do |m|          
+          m.children.each do | value|            
+            self.set_metadata(m.name(), CGI.unescapeHTML(value.to_s))
+          end
         end      
       end					
     end 
