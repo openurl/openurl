@@ -7,22 +7,6 @@ require 'rubygems/package_task'
 
 
 
-begin
-  require 'jeweler'
-  Jeweler::Tasks.new do |gemspec|
-    gemspec.name = "openurl"
-    gemspec.summary = "a Ruby library to create, parse and use NISO Z39.88 OpenURLs"
-    gemspec.email = ["rochkind@jhu.edu", "rossfsinger@gmail.com"]
-    gemspec.homepage = "https://github.com/openurl/openurl"
-    gemspec.authors = ["Jonathan Rochkind", "Ross Singer"]
-    gemspec.files = Dir.glob("{lib,test}/**/*")
-    gemspec.require_path = 'lib'
-    gemspec.has_rdoc = true    
-  end
-rescue LoadError
-  puts "Jeweler not available. Install it with: gem install jeweler"
-end
-
 Rake::TestTask.new('test') do |t|
   t.libs << 'lib'
   t.pattern = 'test/*_test.rb'
