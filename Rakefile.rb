@@ -11,7 +11,7 @@ begin
     gemspec.name = "openurl"
     gemspec.summary = "a Ruby library to create, parse and use NISO Z39.88 OpenURLs"
     gemspec.email = ["rochkind@jhu.edu", "rossfsinger@gmail.com"]
-    gemspec.homepage = "http://openurl.rubyforge.org/"
+    gemspec.homepage = "https://github.com/openurl/openurl"
     gemspec.authors = ["Jonathan Rochkind", "Ross Singer"]
     gemspec.files = Dir.glob("{lib,test}/**/*")
     gemspec.require_path = 'lib'
