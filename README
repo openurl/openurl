@@ -36,6 +36,24 @@ response format, so parsing the returned value is up to you.
   # ContextObject.new_from_kev(   kev_context_object )
   # ContextObject.new_from_xml(   xml_context_object ) # Can be String or REXML::Document
 
+== Ruby 1.9 and encodings
+
+Gem does run and all tests pass under ruby 1.9.  There is very limited
+support for handling character encodings in the proper 1.9 way. 
+
+CTX or XML context objects will be assumed utf-8 even if the ruby string
+they are held in has an ascii-8bit encoding. They will forced into a utf-8 encoding. 
+This seems to be a side effect of the REXML and CGI libraries we use to parse,
+but there are runnable tests that assert it is true. (see test/encoding_test.rb)
+
+Incoming context objects with a non-utf8 ctx_enc value will *not* be handled
+properly, they'll still be forced to utf8. 
+
+Programmatically created context objects, you must ensure all strings are
+represented as utf8 encoded yourself.  
+
+More sophisticated encoding handling can theoretically be added, but it's
+somewhat non-trivial, and it's not clear anyone needs it. 
 
 == INSTALLATION
 
@@ -49,4 +67,4 @@ The source lives in subversion:
 
 == CONTACT
 
-Bugs and suggestions to Ross Singer <rossfsinger@gmail.com>
+Bugs and suggestions to Jonathan Rochkind Ross Singer <rossfsinger@gmail.com>
