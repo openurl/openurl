@@ -17,7 +17,6 @@ begin
     gemspec.authors = ["Jonathan Rochkind", "Ross Singer"]
     gemspec.files = Dir.glob("{lib,test}/**/*")
     gemspec.require_path = 'lib'
-    gemspec.autorequire = 'openurl'
     gemspec.has_rdoc = true    
   end
 rescue LoadError
