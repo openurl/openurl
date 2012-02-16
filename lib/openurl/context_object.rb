@@ -367,7 +367,9 @@ module OpenURL
                 @referent.add_identifier(val)
               end              
             elsif key == 'sid'
-              @referrer.set_identifier("info:sid/"+val.to_s)            
+              @referrer.set_identifier("info:sid/"+val.to_s) 
+            elsif key == 'pid'
+              @referent.set_private_data(val.to_s)           
             else 
               @referent.set_metadata(key, val)
             end

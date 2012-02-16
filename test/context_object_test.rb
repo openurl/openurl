@@ -352,6 +352,13 @@ class ContextObjectTest < Test::Unit::TestCase
     assert_match("ctx_enc=#{CGI.escape("info:ofi/enc:UTF-8")}", ctx.kev)
   end
   
+  def test_kev_01_pid
+      kev = "sid=CSA:eric-set-c&pid=%3CAN%3EED492558%3C%2FAN%3E%26%3CPY%3E2004%3C%2FPY%3E%26%3CAU%3EHsu%2C%20Jeng-yih%20Tim%3C%2FAU%3E&date=2004&genre=proceeding&aulast=Hsu&aufirst=Jeng-yih&auinitm=T&title=Reading%20without%20Teachers%3A%20Literature%20Circles%20in%20an%20EFL%20Classroom"   
+      ctx = OpenURL::ContextObject.new_from_kev(kev) 
+      assert_equal("<AN>ED492558</AN>&<PY>2004</PY>&<AU>Hsu, Jeng-yih Tim</AU>", ctx.referent.private_data)
+  end
+  
+  
   protected
   
   # Make sure ctx1 and ctx2 don't share the same data objects.
