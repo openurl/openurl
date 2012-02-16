@@ -65,4 +65,7 @@ The source lives in git on github:
 
   http://github.com/openurl/openurl
 
+== TESTS
 
+There are some automated tests. Run with `rake test`. They live in `./test`
+and use Test::Unit.
