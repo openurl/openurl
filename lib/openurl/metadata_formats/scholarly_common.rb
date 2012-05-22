@@ -18,6 +18,7 @@ module OpenURL
       @author_keys = ['aulast','aufirst','auinit','auinit1','auinitm','ausuffix',
         'au', 'aucorp']       
     end
+    
     def method_missing(metadata, value=nil)
       meta = metadata.to_s.sub(/=$/,'')
       raise ArgumentError, "#{meta.to_s} is not a valid #{self.class} metadata field." unless (@author_keys+@metadata_keys).index(meta)
@@ -28,9 +29,15 @@ module OpenURL
         end
       else
         return self.metadata[meta]
-      end
-      
+      end      
     end
+    
+    def respond_to?(message)
+      # make it match method_messing
+      key = message.to_s.sub(/=$/,'')
+      super || (@author_keys+@metadata_keys).index(key)
+    end
+    
     
     def set_metadata(key, val)
       @metadata[key] = val.to_s
