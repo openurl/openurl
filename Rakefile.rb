@@ -1,3 +1,11 @@
+begin
+  require 'bundler/setup'
+  require 'bundler/gem_tasks'
+  Bundler::GemHelper.install_tasks
+rescue LoadError
+  puts 'You must `gem install bundler` and `bundle install` to run rake tasks properly.'
+end
+
 require 'rubygems'
 require 'rake'
 require 'rake/testtask'
