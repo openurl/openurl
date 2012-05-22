@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{openurl}
-  s.version = "0.2.3"
+  s.version = "0.3.1"
 
   s.authors = ["Jonathan Rochkind", "Ross Singer"]
   s.date = %q{2011-10-10}
