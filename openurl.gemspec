@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.date = %q{2011-10-10}
   s.email = ["rochkind@jhu.edu", "rossfsinger@gmail.com"]
   s.extra_rdoc_files = [
-    "README"
+    "README.md"
   ]
   s.files =  Dir.glob("{lib,test}/**/*")
   s.homepage = %q{https://github.com/openurl/openurl}
