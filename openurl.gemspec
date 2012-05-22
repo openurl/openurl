@@ -5,7 +5,6 @@ Gem::Specification.new do |s|
   s.version = "0.3.1"
 
   s.authors = ["Jonathan Rochkind", "Ross Singer"]
-  s.date = %q{2011-10-10}
   s.email = ["rochkind@jhu.edu", "rossfsinger@gmail.com"]
   s.extra_rdoc_files = [
     "README.md"
