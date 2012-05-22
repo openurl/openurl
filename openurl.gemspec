@@ -14,6 +14,10 @@ Gem::Specification.new do |s|
   s.homepage = %q{https://github.com/openurl/openurl}
   s.require_paths = ["lib"]
   s.summary = %q{a Ruby library to create, parse and use NISO Z39.88 OpenURLs}
-
+  
+  # currently needs 'marc' becuase of it's inclusion
+  # of the marc referent format, sorry.Should make
+  # this optional.
+  s.add_dependency "marc"
 end
 
