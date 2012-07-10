@@ -96,6 +96,13 @@ else
       assert_equal("UTF-8", ctx.kev.encoding.name)        
     end
     
+    def test_8859_form_vars
+      ctx = OpenURL::ContextObject.new_from_form_vars("btitle" => "M\xE9xico", "ctx_enc" => "info:ofi/enc:ISO-8859-1")
+      
+      assert_equal("UTF-8", ctx.referent.metadata['btitle'].encoding.name) 
+      assert_equal("México".force_encoding("UTF-8"), ctx.referent.metadata["btitle"])
+    end
+    
     
     
     @@xml_with_utf8 = <<eos
