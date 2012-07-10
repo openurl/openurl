@@ -293,10 +293,10 @@ module OpenURL
       # Bail if we're not in ruby 1.9
       return unless "".respond_to? :encoding
       
-      source_encoding = if hash["ctx_enc"] == "info:ofi/enc:ISO-8859-1"
-        "ISO-8859-1"
-      else
-        "UTF-8"
+      source_encoding = "UTF-8"
+      if hash["ctx_enc"] == "info:ofi/enc:ISO-8859-1"
+        hash.delete("ctx_enc")
+        source_encoding = "ISO-8859-1"      
       end
       
       hash.each_pair do |key, values|

@@ -93,7 +93,10 @@ else
       assert_equal("México".force_encoding("UTF-8"), ctx.referent.metadata["btitle"])
   
       # serialized as utf-8
-      assert_equal("UTF-8", ctx.kev.encoding.name)        
+      assert_equal("UTF-8", ctx.kev.encoding.name)
+      # with proper ctx_env, not the one previously specifying ISO-8859-1!
+
+      assert_not_equal "info:ofi/enc:ISO-8859-1", CGI.parse(ctx.kev)["ctx_enc"].first    
     end
     
     def test_8859_form_vars
