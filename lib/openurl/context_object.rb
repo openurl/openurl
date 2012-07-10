@@ -302,13 +302,13 @@ module OpenURL
       hash.each_pair do |key, values|
         # get a list of all terminal values, whether wrapped
         # in arrays or not. We're going to mutate them. 
-        [values].flatten.each do | v |
+        [values].flatten.compact.each do | v |
             v.force_encoding(source_encoding)
             if source_encoding == "UTF-8"
-              ensure_valid_encoding!(v, :invalid => :replace, :undef => :replace )
+              ensure_valid_encoding!(v, :invalid => :replace )
             else
               # transcode, replacing any bad chars. 
-              v.encode!("UTF-8", :invalid => :replace)
+              v.encode!("UTF-8", :invalid => :replace, :undef => :replace )
             end
         end
       end
