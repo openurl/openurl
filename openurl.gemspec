@@ -9,7 +9,9 @@ Gem::Specification.new do |s|
   s.extra_rdoc_files = [
     "README.md"
   ]
-  s.files =  Dir.glob("{lib,test}/**/*")
+  s.files       =  Dir.glob("{lib,test}/**/*")
+  s.test_files  =  Dir.glob("test/**/*")
+
   s.homepage = %q{https://github.com/openurl/openurl}
   s.require_paths = ["lib"]
   s.summary = %q{a Ruby library to create, parse and use NISO Z39.88 OpenURLs}
