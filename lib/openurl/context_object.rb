@@ -1,5 +1,7 @@
 # encoding: UTF-8
 
+require 'ensure_valid_encoding'
+
 module OpenURL
 
   if RUBY_VERSION < '1.9'
@@ -34,7 +36,8 @@ module OpenURL
   # ctx.kev
   # ctx.xml
   class ContextObject    
-
+    include EnsureValidEncoding
+    
     attr_reader :admin, :referent, :referringEntity, :requestor, :referrer, 
       :serviceType, :resolver
     attr_accessor :foreign_keys, :openurl_ver
@@ -236,7 +239,9 @@ module OpenURL
     # entities
     
     def import_xml(xml)			
-      if xml.is_a?(String)
+      if xml.is_a?(String)        
+        xml.force_encoding("UTF-8")
+        ensure_valid_encoding!(xml, :invalid => :replace)
         doc = REXML::Document.new xml.gsub(/>[\s\t]*\n*[\s\t]*</, '><').strip
       elsif xml.is_a?(REXML::Document)
         doc = xml
@@ -274,10 +279,44 @@ module OpenURL
       return co
     end
     
-    # Imports an existing hash of ContextObject values and sets the appropriate
-    # entities.
     
-    def import_hash(hash)            
+    # Takes a hash of openurl key/values, as output by CGI.parse
+    # from a query string for example (values can be strings or arrays
+    # of string). Mutates hash in place.  
+    #
+    # Force encodes to UTF8 or 8859-1, depending on ctx_enc
+    # presence and value. 
+    #
+    # Replaces any illegal bytes with replacement chars, 
+    # transcodes to UTF-8 if needed to ensure UTF8 on way out.
+    def clean_char_encoding!(hash)
+      source_encoding = if hash["ctx_enc"] == "info:ofi/enc:ISO-8859-1"
+        "ISO-8859-1"
+      else
+        "UTF-8"
+      end
+      
+      hash.each_pair do |key, values|
+        # get a list of all terminal values, whether wrapped
+        # in arrays or not. We're going to mutate them. 
+        [values].flatten.each do | v |
+            v.force_encoding(source_encoding)
+            if source_encoding == "UTF-8"
+              ensure_valid_encoding!(v, :invalid => :replace)
+            else
+              # transcode, replacing any bad chars. 
+              v.encode!("UTF-8", :invalid => :replace)
+            end
+        end
+      end
+      
+    end
+    
+    # Imports an existing hash of ContextObject values and sets the appropriate
+    # entities.    
+    def import_hash(hash)    
+      clean_char_encoding!(hash)
+      
       ref = {}
       {"@referent"=>"rft", "@referrer"=>"rfr", "@referringEntity"=>"rfe",
         "@requestor"=>"req"}.each do | ent, abbr |
@@ -387,9 +426,10 @@ module OpenURL
         end
       end  
       
-      # Initialize a new ContextObject object from an existing key/value hash
+
       
-      def self.new_from_hash(hash)
+      # Initialize a new ContextObject object from an existing key/value hash
+      def self.new_from_hash(hash)      
         co = self.new
         co.import_hash(hash)
         return co
@@ -563,8 +603,7 @@ module OpenURL
     
     # Parses the data that should apply to all XML context objects    
     def import_xml_common(ent, node)
-      
-      
+
       REXML::XPath.each(node, "./ctx:identifier", {"ctx"=>"info:ofi/fmt:xml:xsd:ctx"}) do | id |
         ent.add_identifier(id.get_text.value) if id and id.has_text?
       end
