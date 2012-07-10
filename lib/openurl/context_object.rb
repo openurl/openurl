@@ -302,7 +302,7 @@ module OpenURL
         [values].flatten.each do | v |
             v.force_encoding(source_encoding)
             if source_encoding == "UTF-8"
-              ensure_valid_encoding!(v, :invalid => :replace)
+              ensure_valid_encoding!(v, :invalid => :replace, :undef => :replace )
             else
               # transcode, replacing any bad chars. 
               v.encode!("UTF-8", :invalid => :replace)
