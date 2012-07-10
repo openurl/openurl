@@ -1,3 +1,9 @@
+0.4.0 - char encoding in 1.9: more reslience to bad bytes in input,
+        recognition of ctx_enc specifying ISO-8859-1 in parsing kevs
+
+
+{ lost to history }
+
 0.0.2 - Lots of bug fixes found by adding unit tests
 
 0.0.1 - Initial Release
