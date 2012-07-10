@@ -240,7 +240,7 @@ module OpenURL
     
     def import_xml(xml)			
       if xml.is_a?(String)        
-        xml.force_encoding("UTF-8")
+        xml.force_encoding("UTF-8") if xml.respond_to? :force_encoding
         ensure_valid_encoding!(xml, :invalid => :replace)
         doc = REXML::Document.new xml.gsub(/>[\s\t]*\n*[\s\t]*</, '><').strip
       elsif xml.is_a?(REXML::Document)
@@ -290,6 +290,9 @@ module OpenURL
     # Replaces any illegal bytes with replacement chars, 
     # transcodes to UTF-8 if needed to ensure UTF8 on way out.
     def clean_char_encoding!(hash)
+      # Bail if we're not in ruby 1.9
+      return unless "".respond_to? :encoding
+      
       source_encoding = if hash["ctx_enc"] == "info:ofi/enc:ISO-8859-1"
         "ISO-8859-1"
       else
@@ -315,7 +318,7 @@ module OpenURL
     # Imports an existing hash of ContextObject values and sets the appropriate
     # entities.    
     def import_hash(hash)    
-      clean_char_encoding!(hash)
+      clean_char_encoding!(hash) 
       
       ref = {}
       {"@referent"=>"rft", "@referrer"=>"rfr", "@referringEntity"=>"rfe",
