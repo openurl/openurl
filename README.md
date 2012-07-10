@@ -38,22 +38,32 @@ response format, so parsing the returned value is up to you.
 
 ## Ruby 1.9 and encodings
 
-Gem does run and all tests pass under ruby 1.9.  There is very limited
-support for handling character encodings in the proper 1.9 way. 
+Gem is currently developed under 1.9.3, although it should work under 1.8.7.
+There is some limited support for handling character encodings in the
+proper ruby 1.9 way.
 
-CTX or XML context objects will be assumed utf-8 even if the ruby string
-they are held in has an ascii-8bit encoding. They will forced into a utf-8 encoding. 
-This seems to be a side effect of the REXML and CGI libraries we use to parse,
-but there are runnable tests that assert it is true. (see test/encoding_test.rb)
+### load_from_kev, load_from_form_vars
 
-Incoming context objects with a non-utf8 ctx_enc value will *not* be handled
-properly, they'll still be forced to utf8. 
+When using ContextObject#load_from_kev or #load_from_form_vars, input
+will be assumed to be UTF8, unless a ctx_enc value is present specifying 
+ISO-8859-1.  The actual ruby #encoding of the input string/stream is ignored,
+data will be force_encoded on read. If input is specified ISO-8859-1 with 
+ctx_enc data _will_ be _transcoded_ to UTF8 on read. 
+
+Any illegal bytes for the input character encoding _will_ be replaced by
+the unicode replacement symbol ("\uFFFD") on read.
+
+### load_from_xml
+
+Input will be assumed UTF8, and force_encoded to UTF8. Illegal bytes in input 
+for UTF8 will be replaced by unicode replacement char ("\uFFFD"). 
+
+### Programmatic creation of context objects
 
 Programmatically created context objects, you must ensure all strings are
-represented as utf8 encoded yourself.  
+represented and tagged as utf8 encoded yourself, no detection or trascoding
+or correction will be done for you. 
 
-More sophisticated encoding handling can theoretically be added, but it's
-somewhat non-trivial, and it's not clear anyone needs it. 
 
 ## INSTALLATION
 
