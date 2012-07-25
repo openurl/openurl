@@ -127,8 +127,8 @@ module OpenURL
     def kev(abbr)
       kevs = []
       
-      @metadata.each do |k,v|
-        kevs << "#{abbr}.#{k}="+CGI.escape(v) if v                      
+      @metadata.each do |k,v|        
+        kevs << "#{abbr}.#{k}=#{CGI.escape(v.to_str)}" if v
       end
       if @kev_ns
         kevs << "#{abbr}_val_fmt="+CGI.escape(@kev_ns)
