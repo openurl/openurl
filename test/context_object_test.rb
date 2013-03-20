@@ -371,6 +371,11 @@ class ContextObjectTest < Test::Unit::TestCase
       assert_match(/ctx_ver=&/, kev)
   end
   
+  def test_kev_res_id
+    kev = "url_ver=Z39.88-2004&url_ctx_fmt=info:ofi/fmt:kev:mtx:ctx&rfr_id=info:sid/aph&res_id=http://openurl.ac.uk/ukfed:dur.ac.uk&rft_val_fmt=info:ofi/fmt:kev:mtx:journal&rft.aulast=Rance&rft.aufirst=Philip&rft.atitle=De%20militari%20scientia »%20or%20Müller%20Fragment%20as%20a%20philological%20resource&rft.jtitle=Glotta&rft.stitle=Glotta&rft.date=2010&rft.volume=86&rft.spage=63&rft.epage=92&rft.issn=0017-1298&rft_id=info:oclcnum/1714662&rft.genre=article&sid=default:none"
+    ctx = OpenURL::ContextObject.new_from_kev(kev)
+    assert_equal("http://openurl.ac.uk/ukfed:dur.ac.uk", ctx.resolver.first.identifier)
+  end
   protected
   
   # Make sure ctx1 and ctx2 don't share the same data objects.
