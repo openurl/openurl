@@ -352,7 +352,7 @@ module OpenURL
         elsif key.match(/^[a-z]{3}_ref/)
           # determines if we have a by-reference context object
           (entity, v, fmt) = key.split("_")
-          ent = self.translate_abbr(entity)
+          ent = self.get_entity_obj(entity)
           unless ent
             self.foreign_keys[key] = val
             next
@@ -368,45 +368,45 @@ module OpenURL
             end
             ref[entity] = [ref_key, val]
           else
-            if ref[entity][0] == "format"
-              eval("@"+ent).set_reference(val, ref[entity][1])
+            if ref[entity][0] == "format"              
+              instance_variable_get("@#{ent}").set_reference(val, ref[entity][1])
             else
-              eval("@"+ent).set_reference(ref[entity][1], val)
+              instance_variable_get("@#{ent}").set_reference(ref[entity][1], val)
             end
           end
         elsif key.match(/^[a-z]{3}_id$/)
           # Get the entity identifier
           (entity, v) = key.split("_")
-          ent = self.translate_abbr(entity)
+          ent = self.get_entity_obj(entity)
           unless ent
             self.foreign_keys[key] = val
             next
           end
           # May or may not be an array, turn it into one.
           [value].flatten.each do | id |
-            eval("@"+ent).add_identifier(id)
+            ent.add_identifier(id)
           end
                   
         elsif key.match(/^[a-z]{3}_dat$/)
           # Get any private data          
           (entity, v) = key.split("_")
-          ent = self.translate_abbr(entity)
+          ent = self.get_entity_obj(entity)
           unless ent
             self.foreign_keys[key] = val
             next
           end          
-          eval("@"+ent).set_private_data(val)  
+          ent.set_private_data(val)  
         else
           # collect the entity metadata
           keyparts = key.split(".")            
           if keyparts.length > 1
             # This is 1.0 OpenURL
-            ent = self.translate_abbr(keyparts[0])
+            ent = self.get_entity_obj(keyparts[0])
             unless ent
               self.foreign_keys[key] = val
               next
             end            
-            eval("@"+ent).set_metadata(keyparts[1], val)
+            ent.set_metadata(keyparts[1], val)
           else
             # This is a 0.1 OpenURL.  Your mileage may vary on how accurately
             # this maps.
@@ -452,26 +452,29 @@ module OpenURL
       end
     end
     
-    # Translates the abbreviated entity (rft, rfr, etc.) to the associated class
-    # name.  For repeatable entities, uses the first object in the array.  Returns
-    # a string of the object name which would then be eval'ed to call a method
-    # upon.
-    
-    def translate_abbr(abbr)
-      if @@defined_entities.has_key?(abbr)
-        ent = @@defined_entities[abbr]
-        if ent == "service-type"
-          ent = "serviceType[0]"
-        elsif ent == "resolver"
-          ent = "resolver[0]"
-        elsif ent == "referring-entity"      
-          ent = "referringEntity"
+    # Takes a string abbreviated entity  ('rfr', 'rft', etc.), returns
+    # the appropriate ContextObjectEntity object for this ContextObject,
+    # in some cases lazily creating and assigning it. 
+    # @@defined_entities = {"rft"=>"referent", "rfr"=>"referrer", "rfe"=>"referring-entity", "req"=>"requestor", "svc"=>"service-type", "res"=>"resolver"}
+    def get_entity_obj(abbr)
+      ivar_name = @@defined_entities[abbr]
+
+      return nil unless ivar_name
+
+      return case ivar_name
+        when "service-type"        
+          @serviceType << ContextObjectEntity.new if @serviceType.empty?
+          @serviceType.first
+        when "resolver"
+          @resolver << ContextObjectEntity.new if @resolver.empty?
+          @resolver.first
+        when "referring-entity"
+          instance_variable_get("@referringEntity")
+        else
+          instance_variable_get("@#{ivar_name}")
         end
-      else
-        return nil
-      end
-      return ent
     end
+
     
     def self.entities(term)
       return @@defined_entities[term] if @@defined_entities.keys.index(term)
