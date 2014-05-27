@@ -441,11 +441,15 @@ module OpenURL
       # if we don't have a referent format (most likely because we have a 0.1
       # OpenURL), try to determine something from the genre.  If that doesn't 
       # exist, just call it a journal since most 0.1 OpenURLs would be one,
-      # anyway.
-      unless @referent.format        
+      # anyway. Case insensitive match, because some providers play fast and
+      # loose. (BorrowDirect sends 'Book', which can confuse us otherwise)
+      unless @referent.format
         fmt = case @referent.metadata['genre']
-        when /article|journal|issue|proceeding|conference|preprint/ then 'journal'
-        when /book|bookitem|report|document/ then 'book'
+        when /article|journal|issue|proceeding|conference|preprint/i then 'journal'
+        when /book|bookitem|report|document/i then 'book'
+        # 'dissertation' is not a real 'genre', but some use it anyway, and should
+        # map to format 'dissertation' which is real. 
+        when /dissertation/i then 'dissertation' 
         else 'journal'
         end
         @referent.set_format(fmt)
