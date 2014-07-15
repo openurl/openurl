@@ -32,7 +32,7 @@ module OpenURL
       end      
     end
     
-    def respond_to?(message)
+    def respond_to?(message, include_all=false)
       # make it match method_messing
       key = message.to_s.sub(/=$/,'')
       super || (@author_keys+@metadata_keys).index(key)
