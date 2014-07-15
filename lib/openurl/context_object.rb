@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-require 'ensure_valid_encoding'
+require 'scrub_rb' # backfill of String#scrub to ruby 1.9.3 and 2.0
 
 module OpenURL
 
@@ -35,9 +35,7 @@ module OpenURL
   # == Serialize a ContextObject to kev or XML :
   # ctx.kev
   # ctx.xml
-  class ContextObject    
-    include EnsureValidEncoding
-    
+  class ContextObject
     attr_reader :admin, :referent, :referringEntity, :requestor, :referrer, 
       :serviceType, :resolver
     attr_accessor :foreign_keys, :openurl_ver
@@ -241,7 +239,7 @@ module OpenURL
     def import_xml(xml)			
       if xml.is_a?(String)        
         xml.force_encoding("UTF-8") if xml.respond_to? :force_encoding
-        ensure_valid_encoding!(xml, :invalid => :replace)
+        xml.scrub!
         doc = REXML::Document.new xml.gsub(/>[\s\t]*\n*[\s\t]*</, '><').strip
       elsif xml.is_a?(REXML::Document)
         doc = xml
@@ -305,7 +303,7 @@ module OpenURL
         [values].flatten.compact.each do | v |
             v.force_encoding(source_encoding)
             if source_encoding == "UTF-8"
-              ensure_valid_encoding!(v, :invalid => :replace )
+              v.scrub!
             else
               # transcode, replacing any bad chars. 
               v.encode!("UTF-8", :invalid => :replace, :undef => :replace )

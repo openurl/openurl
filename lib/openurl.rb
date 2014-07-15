@@ -12,6 +12,8 @@ require 'openurl/context_object'
 require 'openurl/context_object_entity'
 require 'openurl/transport'
 
+require 'scrub_rb'
+
 Dir.open(File.dirname(File.expand_path(__FILE__))+'/openurl/metadata_formats').each do | file |
   next if file.match(/^\./)
   class_name = file.sub(/\.rb$/,'')

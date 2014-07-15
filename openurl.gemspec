@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
   # of the marc referent format, sorry.Should make
   # this optional.
   s.add_dependency "marc"
-  # for encoding safety in reading/parsing kev
-  s.add_dependency "ensure_valid_encoding"
+  # backfill of String#scrub -- for encoding safety in reading/parsing kev -- in ruby pre 2.1
+  s.add_dependency "scrub_rb"
 end
 
