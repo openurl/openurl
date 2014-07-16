@@ -21,6 +21,6 @@ Gem::Specification.new do |s|
   # this optional.
   s.add_dependency "marc"
   # backfill of String#scrub -- for encoding safety in reading/parsing kev -- in ruby pre 2.1
-  s.add_dependency "scrub_rb"
+  s.add_dependency "scrub_rb", "~> 1.0"
 end
 
