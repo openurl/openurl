@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{openurl}
-  s.version = "0.6.0"
+  s.version = "1.0.0"
 
   s.authors = ["Jonathan Rochkind", "Ross Singer"]
   s.email = ["rochkind@jhu.edu", "rossfsinger@gmail.com"]
